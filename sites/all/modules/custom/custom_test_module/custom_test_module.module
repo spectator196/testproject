@@ -1,0 +1,172 @@
+<?php
+
+function custom_test_module_menu() {
+  $items = array();
+  $items['customtest'] = array(
+    'title' => 'Тестовая Анкета',
+    'page callback' => array('custom_test_module_callback'),
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+function custom_test_module_callback() {
+  $form_1=drupal_get_form('custom_test_module_form');
+  $form_1=drupal_render($form_1);
+  
+  return ($form_1);
+}
+
+function custom_test_module_form($form, &$form_state)
+{
+  $data_array = array();
+  
+  $data_array['title_second_name'] = array(
+
+    '#type' => 'textfield', 
+    '#title' => 'Фамилия', 
+    '#size' => 30, 
+    '#maxlength' => 128, 
+  );
+  
+  $data_array['title_first_name'] = array(
+
+    '#type' => 'textfield', 
+    '#title' => 'Имя', 
+    '#size' => 30, 
+    '#maxlength' => 128, 
+  );
+  
+  $data_array['title_third_name'] = array(
+
+    '#type' => 'textfield', 
+    '#title' => 'Отчество', 
+    '#size' => 30, 
+    '#maxlength' => 128, 
+  );
+
+  $data_array['phonenumber'] = array(
+    '#type' => 'textfield',
+    '#attributes' => array(
+        'data-type' => 'number',
+    ),
+    '#title' => 'Номер телефона (+7...)',
+    '#maxlength' => 10 ,
+    '#field_prefix'=> '+7',
+    '#size'=> 10,
+    
+  );
+
+  $data_array['sex_radios'] = array(
+    '#type' => 'radios',
+    '#title' => 'Укажите пол',
+    '#options' => array(0 => 'Мужской', 1 => 'Женский'),
+    '#suffix' => '<br><br><br><br>',
+  );
+
+  $terms_of_use_text = 'Нажимая кнопку «Продолжить», 
+  я принимаю условия Пользовательского соглашения, даю своё согласие "xxx" 
+  и БАНК 
+  на обработку моих персональных данных в соответствии с Федеральным законом 
+  от 27.07.2006 года №152-ФЗ «О персональных данных» на условиях и для целей, 
+  определенных Политикой конфиденциальности, на передачу персональных данных от ООО xxx 
+  Банку, а также соглашаюсь на получение рекламы от Банка и xxx по сетям электросвязи
+  с соответствии с частью 1 статьи 18 Федерального закона от 13.03.2006 №38-ФЗ
+  «О рекламе» на условиях Пользовательского соглашения.';
+
+  $data_array['terms of use text'] = array(
+    '#title' => 'Условия пользования',
+    '#type' => 'fieldset',
+    '#description' => $terms_of_use_text,
+  );
+
+  $data_array['terms of use checkbox'] = array(
+    '#type' => 'checkbox', 
+    '#title' => 'Я согласен с условиями пользования ...',
+  );
+
+  $data_array['list choice'] = array(
+    '#type' => 'select',
+    '#title' => 'Хотите получать уведомления на п/я?',
+    '#options' => array(
+      1 => 'Да',
+      0 => 'Нет',    
+    ),
+  );
+
+  $data_array['next button'] = array(
+    '#type' =>'submit', 
+    '#value' => 'Продолжить', 
+  );
+  
+  $form['#submit']=array('custom_test_module_form_sumbit');
+  $form['#validate'] = array('custom_test_module_form_validate');
+
+  return $data_array;
+}
+
+function custom_test_module_form_validate($form, &$form_state)
+{   
+  if ((strlen($form_state['values']['phonenumber'])) <> 0) {
+    if (strlen($form_state['values']['phonenumber']) < 10){
+      form_set_error('phonenumber', 'Укажите номер телефона полностью!');}
+    } else {
+      form_set_error('phonenumber', 'Укажите номер телефона!');
+    }
+  ;
+  
+    
+  if (($form_state['values']['title_second_name']) != ''){
+    if ((($form_state['values']['title_second_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_second_name'])[0]))[0]) 
+    {
+      form_set_error('title_second_name', 'Укажите Фамилию с заглавной буквы!');
+    }
+  } else {
+      form_set_error('title_second_name', 'Укажите Фамилию!');
+  } 
+
+  if (($form_state['values']['title_first_name']) != ''){
+    if ((($form_state['values']['title_first_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_first_name'])[0]))[0])
+    {
+      form_set_error('title_first_name', 'Укажите Имя с заглавной буквы!');
+    }
+  } else {
+    form_set_error('title_first_name', 'Укажите Имя!');   
+  }
+
+  if (($form_state['values']['title_third_name']) != ''){
+    if ((($form_state['values']['title_third_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_third_name'])[0]))[0])
+    {
+      form_set_error('title_third_name', 'Укажите Отчество с заглавной буквы!');
+    }
+  }
+  if (($form_state['values']['sex_radios']) == '') {
+    form_set_error('sex_radios', 'Укажите ваш пол');
+  }
+
+  if (($form_state['values']['terms of use checkbox']) != 1){
+    form_set_error('terms of use checkbox','checkbox возвращает = '.($form_state['values']['terms of use checkbox']));
+  };
+}
+
+function custom_test_module_form_sumbit($form, &$form_state)
+{
+  $title_second_name=$form_state['values']['title_second_name'];
+  $title_first_name=$form_state['values']['title_first_name'];
+  $title_third_name= $form_state['values']['title_third_name'];
+  $sex=$form_state['values']['sex_radios'];
+  $phonenumber=$form_state['values']['phonenumber'];
+  $list_choice=$form_state['values']['list choice'];
+  
+  variable_set('title_second_name', $title_second_name);
+  variable_set('title_first_name', $title_first_name);
+  variable_set('title_third_name', $title_third_name);
+  variable_set('phonenumber', $phonenumber);
+  variable_set('list choice', $list_choice);
+  variable_set('sex', $sex);
+
+  drupal_set_message('Продолжаем ...'.$title_second_name.' '.$title_first_name.' '.$title_first_name);
+}
+
+

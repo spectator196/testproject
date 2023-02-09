@@ -1,0 +1,5 @@
+name = Custom Test Module
+description = Test Module ...
+package = My test works
+version = VERSION
+core = 7.x
