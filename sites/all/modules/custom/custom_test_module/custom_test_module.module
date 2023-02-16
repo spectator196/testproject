@@ -5,7 +5,8 @@ function custom_test_module_menu() {
 
   $items['customtest'] = array( // рут с формой
     'title' => 'Тестовая Анкета',
-    'page callback' => array('custom_test_module_callback'),
+    'page callback' => array('drupal_get_form'),
+    'page arguments' => array('custom_test_module_form','W1'),
     'access arguments' => array('access content'),
   );
 
@@ -18,26 +19,19 @@ function custom_test_module_menu() {
   return $items;
 }
 
-function custom_test_module_callback() {
-  $form_1=drupal_get_form('custom_test_module_form');
-  $form_1=drupal_render($form_1);
-  
-  return ($form_1);
-}
-
 function custom_test_module_form($form, &$form_state)
 {
-  $data_array = array();
-  
-  $data_array['title_second_name'] = array( // Ф
+
+   
+  $form['title_second_name'] = array( // Ф
 
     '#type' => 'textfield', 
-    '#title' => 'Фамилия', 
+    '#title' => 'Фамилия',
     '#size' => 30, 
     '#maxlength' => 128, 
   );
   
-  $data_array['title_first_name'] = array(// И
+  $form['title_first_name'] = array(// И
 
     '#type' => 'textfield', 
     '#title' => 'Имя', 
@@ -45,7 +39,7 @@ function custom_test_module_form($form, &$form_state)
     '#maxlength' => 128, 
   );
   
-  $data_array['title_third_name'] = array(// О
+  $form['title_third_name'] = array(// О
 
     '#type' => 'textfield', 
     '#title' => 'Отчество', 
@@ -53,7 +47,7 @@ function custom_test_module_form($form, &$form_state)
     '#maxlength' => 128, 
   );
 
-  $data_array['phonenumber'] = array( // номер телефона
+  $form['phonenumber'] = array( // номер телефона
     '#type' => 'textfield',
     '#attributes' => array(
         'data-type' => 'number',
@@ -65,11 +59,47 @@ function custom_test_module_form($form, &$form_state)
     
   );
 
-  $data_array['sex_radios'] = array( // radiobutton с полом
+  $form['sex_radios'] = array( // radiobutton с полом
     '#type' => 'radios',
     '#title' => 'Укажите пол',
     '#options' => array(0 => 'Мужской', 1 => 'Женский'),
-    '#suffix' => '<br><br><br><br>',
+    
+  );
+
+  $form['e_mail'] = array(// email
+
+    '#type' => 'textfield', 
+    '#title' => 'Email', 
+    '#size' => 30, 
+    '#maxlength' => 128, 
+  );
+
+  $form['e_mail'] = array(// email
+
+    '#type' => 'textfield', 
+    '#title' => 'Email', 
+    '#size' => 30, 
+    '#maxlength' => 128, 
+  );
+
+
+  $form['list_choice'] = array( // список да/нет для подтверждения уведомлений
+    '#type' => 'select',
+    '#title' => 'Хотите получать уведомления на п/я?',
+    '#options' => array(
+      1 => 'Да',
+      0 => 'Нет',    
+    ),
+    
+  );
+
+  $form['list_choice'] = array( // список да/нет для подтверждения уведомлений
+    '#type' => 'select',
+    '#title' => 'Хотите получать уведомления на п/я?',
+    '#options' => array(
+      1 => 'Да',
+      0 => 'Нет',    
+    ),
   );
 
   $terms_of_use_text = 'Нажимая кнопку «Продолжить», 
@@ -82,40 +112,30 @@ function custom_test_module_form($form, &$form_state)
   с соответствии с частью 1 статьи 18 Федерального закона от 13.03.2006 №38-ФЗ
   «О рекламе» на условиях Пользовательского соглашения.';
 
-  $data_array['terms of use text'] = array( //текст поле с условиями пользования 
+  $form['terms_of_use_text'] = array( //текст поле с условиями пользования 
     '#title' => 'Условия пользования',
+    '#prefix' => '<br><br><br><br>',
     '#type' => 'fieldset',
     '#description' => $terms_of_use_text,
   );
 
-  $data_array['terms of use checkbox'] = array(// чекбокс для условий пользования
+  $form['terms_of_use_checkbox'] = array(// чекбокс для условий пользования
     '#type' => 'checkbox', 
     '#title' => 'Я согласен с условиями пользования ...',
   );
 
-  $data_array['list choice'] = array( // список да/нет для подтверждения уведомлений
-    '#type' => 'select',
-    '#title' => 'Хотите получать уведомления на п/я?',
-    '#options' => array(
-      1 => 'Да',
-      0 => 'Нет',    
-    ),
-  );
-
-  $data_array['next button'] = array( // кнопка продолжить
+  $form['next_button'] = array( // кнопка продолжить
     '#type' =>'submit', 
     '#value' => 'Продолжить', 
   );
   
-  $form['#submit']=array('custom_test_module_form_sumbit');
-  $form['#validate'] = array('custom_test_module_form_validate');
-
-  return $data_array;
+  return $form;
 }
 
 function custom_test_module_form_validate($form, &$form_state)
 {   
-  if ((strlen($form_state['values']['phonenumber'])) <> 0) { // проверка факта наличия номера телефона и его корректности по длине  
+
+  if (!empty($form_state['values']['phonenumber'])) { // проверка факта наличия номера телефона и его корректности по длине  
     if (strlen($form_state['values']['phonenumber']) < 10){
       form_set_error('phonenumber', 'Укажите номер телефона полностью!');}
     } else {
@@ -124,7 +144,7 @@ function custom_test_module_form_validate($form, &$form_state)
   ;
   
     
-  if (($form_state['values']['title_second_name']) != ''){ // проверка факта наличия указанного ФИО + заглавной буквы 
+  if (!empty($form_state['values']['title_second_name'])){ // проверка факта наличия указанного ФИО + заглавной буквы 
     if ((($form_state['values']['title_second_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_second_name'])[0]))[0]) 
     {
       form_set_error('title_second_name', 'Укажите Фамилию с заглавной буквы!');
@@ -132,8 +152,9 @@ function custom_test_module_form_validate($form, &$form_state)
   } else {
       form_set_error('title_second_name', 'Укажите Фамилию!');
   } 
+  // empty 1 слово 
 
-  if (($form_state['values']['title_first_name']) != ''){
+  if (!empty($form_state['values']['title_first_name'])){
     if ((($form_state['values']['title_first_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_first_name'])[0]))[0])
     {
       form_set_error('title_first_name', 'Укажите Имя с заглавной буквы!');
@@ -141,23 +162,27 @@ function custom_test_module_form_validate($form, &$form_state)
   } else {
     form_set_error('title_first_name', 'Укажите Имя!');   
   }
+  // два слова 
 
-  if (($form_state['values']['title_third_name']) != ''){
+  if (!empty($form_state['values']['title_third_name'])){
     if ((($form_state['values']['title_third_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_third_name'])[0]))[0])
     {
       form_set_error('title_third_name', 'Укажите Отчество с заглавной буквы!');
     }
   }
-  if (($form_state['values']['sex_radios']) == '') { // проверка факта наличия указанного пола 
+  // русское 
+
+  if (empty($form_state['values']['sex_radios'])) { // проверка факта наличия указанного пола 
     form_set_error('sex_radios', 'Укажите ваш пол!');
   }
 
-  if (($form_state['values']['terms of use checkbox']) != 1){ // проверка факта наличия галочки 
-    form_set_error('terms of use checkbox','checkbox возвращает = '.($form_state['values']['terms of use checkbox']));
-  };
+  if (($form_state['values']['terms_of_use_checkbox']) != 1){ // проверка факта наличия галочки 
+    form_set_error('terms_of_use_checkbox','Требуется согласие с условиями пользования!');
+  }; 
+ 
 }
 
-function custom_test_module_form_sumbit($form, &$form_state)
+function custom_test_module_form_submit($form, &$form_state)
 {
   $title_second_name=$form_state['values']['title_second_name'];
   $title_first_name=$form_state['values']['title_first_name'];
@@ -170,15 +195,21 @@ function custom_test_module_form_sumbit($form, &$form_state)
   variable_set('title_first_name', $title_first_name);
   variable_set('title_third_name', $title_third_name);
   variable_set('phonenumber', $phonenumber);
-  variable_set('list choice', $list_choice);
+  variable_set('list_choice', $list_choice);
   variable_set('sex', $sex);
 
-  drupal_set_message('Продолжаем ...'.$title_second_name.' '.$title_first_name.' '.$title_first_name);
+  
+  drupal_set_message('Продолжаем '.$title_first_name.' '.$title_second_name);
 }
 
 
-function custom_test_theme_render_form($form, &$form_state)
+function custom_test_module_theme_render_callback()
 {
-  $variables=array('status_messages', 'warning');
-  return theme_render_template('C:\OSPanel\domains\testproject\themes\garland\maintenance-page.tpl.php')
+
+  $variables=[
+    'name'=> 'Max',
+    'age' => 27,
+  ];
+  return  theme_render_template(path_to_theme() . '/custom_page.tpl.php', $variables);
 }
+
