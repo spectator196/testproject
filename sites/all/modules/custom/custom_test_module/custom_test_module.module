@@ -145,19 +145,21 @@ function custom_test_module_form_validate($form, &$form_state)
   
     
   if (!empty($form_state['values']['title_second_name'])){ // проверка факта наличия указанного ФИО + заглавной буквы 
-    if ((($form_state['values']['title_second_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_second_name'])[0]))[0]) 
+    if (!preg_match("/^[A-Z]{1}[a-z]{1,}/", ($form_state['values']['title_second_name']))) 
     {
-      form_set_error('title_second_name', 'Укажите Фамилию с заглавной буквы!');
+      form_set_error('title_second_name', 'Укажите Фамилию с заглавной буквы, английскими символами, без пробелов!');
     }
   } else {
       form_set_error('title_second_name', 'Укажите Фамилию!');
   } 
+  
+  
   // empty 1 слово 
 
   if (!empty($form_state['values']['title_first_name'])){
-    if ((($form_state['values']['title_first_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_first_name'])[0]))[0])
+    if (!preg_match("/[а-яё][\s][а-яё]/iu", ($form_state['values']['title_first_name']))) 
     {
-      form_set_error('title_first_name', 'Укажите Имя с заглавной буквы!');
+      form_set_error('title_first_name', 'Укажите Имя в два слова, русскими символами, через пробел!');
     }
   } else {
     form_set_error('title_first_name', 'Укажите Имя!');   
@@ -165,10 +167,10 @@ function custom_test_module_form_validate($form, &$form_state)
   // два слова 
 
   if (!empty($form_state['values']['title_third_name'])){
-    if ((($form_state['values']['title_third_name'])[0])[0] != (mb_strtoupper(($form_state['values']['title_third_name'])[0]))[0])
+    if (!preg_match("/^[А-ЯЁ]{1}[а-яё]{1,}/", ($form_state['values']['title_first_name']))) 
     {
-      form_set_error('title_third_name', 'Укажите Отчество с заглавной буквы!');
-    }
+      form_set_error('title_third_name', 'Укажите Отчество с заглавной буквы, русскими символами, без пробелов!');
+    } 
   }
   // русское 
 
