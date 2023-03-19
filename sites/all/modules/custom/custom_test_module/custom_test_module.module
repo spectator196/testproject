@@ -62,7 +62,7 @@ function custom_test_module_form($form, &$form_state)
   $form['sex_radios'] = array( // radiobutton с полом
     '#type' => 'radios',
     '#title' => 'Укажите пол',
-    '#options' => array(0 => 'Мужской', 1 => 'Женский'),
+    '#options' => array('male' => 'Мужской', 'female' => 'Женский'),
     
   );
 
@@ -138,6 +138,8 @@ function custom_test_module_form_validate($form, &$form_state)
   if (!empty($form_state['values']['phonenumber'])) { // проверка факта наличия номера телефона и его корректности по длине  
     if (strlen($form_state['values']['phonenumber']) < 10){
       form_set_error('phonenumber', 'Укажите номер телефона полностью!');}
+    if (!preg_match("/^(\d){1,10}$/" ,($form_state['values']['phonenumber']))){
+      form_set_error('phonenumber', 'Укажите цифровое значение!');}
     } else {
       form_set_error('phonenumber', 'Укажите номер телефона!');
     }
