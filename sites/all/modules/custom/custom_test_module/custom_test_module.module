@@ -22,8 +22,8 @@ function custom_test_module_menu() {
 function custom_test_module_form($form, &$form_state)
 {
 
-   
-  $form['title_second_name'] = array( // Ф
+  // Ф 
+  $form['title_second_name'] = array( 
 
     '#type' => 'textfield', 
     '#title' => 'Фамилия',
@@ -31,7 +31,8 @@ function custom_test_module_form($form, &$form_state)
     '#maxlength' => 128, 
   );
   
-  $form['title_first_name'] = array(// И
+  // И
+  $form['title_first_name'] = array(
 
     '#type' => 'textfield', 
     '#title' => 'Имя', 
@@ -39,7 +40,8 @@ function custom_test_module_form($form, &$form_state)
     '#maxlength' => 128, 
   );
   
-  $form['title_third_name'] = array(// О
+  // О
+  $form['title_third_name'] = array(
 
     '#type' => 'textfield', 
     '#title' => 'Отчество', 
@@ -47,7 +49,8 @@ function custom_test_module_form($form, &$form_state)
     '#maxlength' => 128, 
   );
 
-  $form['phonenumber'] = array( // номер телефона
+  // номер телефона
+  $form['phonenumber'] = array( 
     '#type' => 'textfield',
     '#attributes' => array(
         'data-type' => 'number',
@@ -58,32 +61,25 @@ function custom_test_module_form($form, &$form_state)
     '#size'=> 10,
     
   );
-
-  $form['sex_radios'] = array( // radiobutton с полом
+  // radiobutton с полом
+  $form['sex_radios'] = array( 
     '#type' => 'radios',
     '#title' => 'Укажите пол',
     '#options' => array('male' => 'Мужской', 'female' => 'Женский'),
     
   );
 
-  $form['e_mail'] = array(// email
+  // email
+  $form['e_mail'] = array(
 
     '#type' => 'textfield', 
     '#title' => 'Email', 
     '#size' => 30, 
     '#maxlength' => 128, 
   );
-
-  $form['e_mail'] = array(// email
-
-    '#type' => 'textfield', 
-    '#title' => 'Email', 
-    '#size' => 30, 
-    '#maxlength' => 128, 
-  );
-
-
-  $form['list_choice'] = array( // список да/нет для подтверждения уведомлений
+  
+  // список да/нет для подтверждения уведомлений
+  $form['list_choice'] = array( 
     '#type' => 'select',
     '#title' => 'Хотите получать уведомления на п/я?',
     '#options' => array(
@@ -92,8 +88,8 @@ function custom_test_module_form($form, &$form_state)
     ),
     
   );
-
-  $form['list_choice'] = array( // список да/нет для подтверждения уведомлений
+  // список да/нет для подтверждения уведомлений
+  $form['list_choice'] = array( 
     '#type' => 'select',
     '#title' => 'Хотите получать уведомления на п/я?',
     '#options' => array(
@@ -111,20 +107,21 @@ function custom_test_module_form($form, &$form_state)
   Банку, а также соглашаюсь на получение рекламы от Банка и xxx по сетям электросвязи
   с соответствии с частью 1 статьи 18 Федерального закона от 13.03.2006 №38-ФЗ
   «О рекламе» на условиях Пользовательского соглашения.';
-
-  $form['terms_of_use_text'] = array( //текст поле с условиями пользования 
+  
+  //текст поле с условиями пользования 
+  $form['terms_of_use_text'] = array( 
     '#title' => 'Условия пользования',
     '#prefix' => '<br><br><br><br>',
     '#type' => 'fieldset',
     '#description' => $terms_of_use_text,
   );
-
-  $form['terms_of_use_checkbox'] = array(// чекбокс для условий пользования
+  // чекбокс для условий пользования
+  $form['terms_of_use_checkbox'] = array(
     '#type' => 'checkbox', 
     '#title' => 'Я согласен с условиями пользования ...',
   );
-
-  $form['next_button'] = array( // кнопка продолжить
+  // кнопка продолжить
+  $form['next_button'] = array( 
     '#type' =>'submit', 
     '#value' => 'Продолжить', 
   );
@@ -134,8 +131,8 @@ function custom_test_module_form($form, &$form_state)
 
 function custom_test_module_form_validate($form, &$form_state)
 {   
-
-  if (!empty($form_state['values']['phonenumber'])) { // проверка факта наличия номера телефона и его корректности по длине  
+  // проверка факта наличия номера телефона и его корректности по длине
+  if (!empty($form_state['values']['phonenumber'])) {   
     if (strlen($form_state['values']['phonenumber']) < 10){
       form_set_error('phonenumber', 'Укажите номер телефона полностью!');}
     if (!preg_match("/^(\d){1,10}$/" ,($form_state['values']['phonenumber']))){
@@ -145,8 +142,8 @@ function custom_test_module_form_validate($form, &$form_state)
     }
   ;
   
-    
-  if (!empty($form_state['values']['title_second_name'])){ // проверка факта наличия указанного ФИО + заглавной буквы 
+  // проверка факта наличия указанного ФИО + заглавной буквы   
+  if (!empty($form_state['values']['title_second_name'])){ 
     if (!preg_match("/^[A-Z]{1}[a-z]{1,}/", ($form_state['values']['title_second_name']))) 
     {
       form_set_error('title_second_name', 'Укажите Фамилию с заглавной буквы, английскими символами, без пробелов!');
@@ -155,9 +152,10 @@ function custom_test_module_form_validate($form, &$form_state)
       form_set_error('title_second_name', 'Укажите Фамилию!');
   } 
   
+
+  
   
   // empty 1 слово 
-
   if (!empty($form_state['values']['title_first_name'])){
     if (!preg_match("/[а-яё][\s][а-яё]/iu", ($form_state['values']['title_first_name']))) 
     {
@@ -166,21 +164,22 @@ function custom_test_module_form_validate($form, &$form_state)
   } else {
     form_set_error('title_first_name', 'Укажите Имя!');   
   }
+  
   // два слова 
-
   if (!empty($form_state['values']['title_third_name'])){
     if (!preg_match("/^[А-ЯЁ]{1}[а-яё]{1,}/", ($form_state['values']['title_first_name']))) 
     {
       form_set_error('title_third_name', 'Укажите Отчество с заглавной буквы, русскими символами, без пробелов!');
     } 
   }
-  // русское 
-
-  if (empty($form_state['values']['sex_radios'])) { // проверка факта наличия указанного пола 
+   
+  // русское
+  // проверка факта наличия указанного пола 
+  if (empty($form_state['values']['sex_radios'])) { 
     form_set_error('sex_radios', 'Укажите ваш пол!');
   }
-
-  if (($form_state['values']['terms_of_use_checkbox']) != 1){ // проверка факта наличия галочки 
+  // проверка факта наличия галочки 
+  if (($form_state['values']['terms_of_use_checkbox']) != 1){ 
     form_set_error('terms_of_use_checkbox','Требуется согласие с условиями пользования!');
   }; 
  
@@ -214,6 +213,6 @@ function custom_test_module_theme_render_callback()
     'name'=> 'Max',
     'age' => 27,
   ];
-  return  theme_render_template(path_to_theme() . '/custom_page.tpl.php', $variables);
+  return theme_render_template(path_to_theme() . '/custom_page.tpl.php', $variables);
 }
 
