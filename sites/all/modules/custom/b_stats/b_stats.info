@@ -1,0 +1,5 @@
+name = b_stats Module
+description = Test statistics/homework
+package = My test works
+version = VERSION
+core = 7.x
