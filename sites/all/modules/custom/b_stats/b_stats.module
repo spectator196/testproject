@@ -1,24 +1,19 @@
 <?php
 
-function b_stats_module_menu() {
+module_load_include('inc', 'b_stats', 'b_stats.faker');
+
+function b_stats_menu() {
   $items = array();
 
-  $items['stats'] = array( // рут с формой
+  $items['stats'] = array( 
     'title' => 'Статистика заявок',
-    'page callback' => array('drupal_get_form'),
-    'page arguments' => array('b_stats_module_form'),
-    'access arguments' => array('access content'),
-  );
+    'page callback' => array('b_stats_theme_render_callback'),
+    'access arguments' => array('access content'),);
 
   return $items;
 }
 
-function b_stats_module_form($form, &$form_state){
-    $form['text_field'] = array( 
-    '#title' => 'Тест',
-    '#type' => 'fieldset',
-    '#description' => 'Тестовый Текст',
-  );
-
-  return $form;
+function b_stats_theme_render_callback(){
+  $content=['data_list' => b_stats_faker_statistics_generator(10)];
+  return theme_render_template('sites/all/modules/custom/b_stats/theme/main.tpl.php', $content);
 }
