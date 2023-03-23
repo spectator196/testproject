@@ -71,7 +71,7 @@ define('ADDRESS_ARRAY', array('Россия, г. Подольск, Советс�
 'Россия, г. Псков, Космонавтов ул., д. 11 кв.30',
 'Россия, г. Комсомольск-на-Амуре, Колхозный пер., д. 20'));
 
-define('reg_form',array('P21001','P11001'));
+define('REG_FORM',array('P21001','P11001'));
 function b_stats_faker_statistics_generator ($record_counts){
     
     $answer_array=[];
@@ -120,6 +120,10 @@ function b_stats_faker_statistics_generator ($record_counts){
         $random_inn_value=INN_ARRAY[$random_inn_key];
         array_push($record_array, $random_inn_value);
 
+        $random_reg_form_key=array_rand(constant('REG_FORM'));
+        $random_reg_form__value=REG_FORM[$random_reg_form_key];
+        array_push($record_array, $random_reg_form__value);
+
         $random_snils_key=array_rand(constant('SNILS_ARRAY'));
         $random_snils_value=SNILS_ARRAY[$random_snils_key];
         array_push($record_array, $random_snils_value);
@@ -139,7 +143,7 @@ function b_stats_faker_statistics_generator ($record_counts){
         $random_address_key=array_rand(constant('ADDRESS_ARRAY'));
         $random_address_value=ADDRESS_ARRAY[$random_address_key];
         array_push($record_array, $random_address_value);
-        
+
         array_push($answer_array, $record_array);
     };
 
