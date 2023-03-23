@@ -14,6 +14,6 @@ function b_stats_menu() {
 }
 
 function b_stats_theme_render_callback(){
-  $content=['data_list' => b_stats_faker_statistics_generator(10)];
+  $content=['data_list' => b_stats_faker_statistics_generator(rand(10,35))];
   return theme_render_template('sites/all/modules/custom/b_stats/theme/main.tpl.php', $content);
 }
