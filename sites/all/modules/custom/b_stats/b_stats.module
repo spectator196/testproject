@@ -9,11 +9,35 @@ function b_stats_menu() {
     'title' => 'Статистика заявок',
     'page callback' => array('b_stats_theme_render_callback'),
     'access arguments' => array('access content'),);
-
   return $items;
 }
 
 function b_stats_theme_render_callback(){
-  $content=['data_list' => b_stats_faker_statistics_generator(rand(10,35))];
+  $content=b_stats_faker_statistics_generator(rand(10,35));
+  $content=['data_list'=>rework_list($content)];
   return theme_render_template('sites/all/modules/custom/b_stats/theme/main.tpl.php', $content);
+}
+
+
+
+function rework_list($list){
+  $result_array=[];
+  foreach ($list as $elem){
+      $record_array=[];
+      $record_array['ID']=$elem[0];
+
+      $record_array['Full_name']=($elem[2].' '.$elem[3].' '.$elem[4]);
+
+      $record_array['Inn']=$elem[5];
+      $record_array['Email']=$elem[8];
+      $record_array['Phonenumber']=$elem[9];
+      $record_array['Reg_form']=$elem[6];
+      $record_array['SNILS']=$elem[7];
+      $record_array['Birthday']=$elem[10];
+      $record_array['Sex']=$elem[1];
+      $record_array['Address']=$elem[11];
+      
+      $result_array[]=$record_array;
+  }
+  return $result_array;
 }
