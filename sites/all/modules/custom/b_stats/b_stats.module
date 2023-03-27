@@ -9,11 +9,127 @@ function b_stats_menu() {
     'title' => 'Статистика заявок',
     'page callback' => array('b_stats_theme_render_callback'),
     'access arguments' => array('access content'),);
-
   return $items;
 }
 
 function b_stats_theme_render_callback(){
-  $content=['data_list' => b_stats_faker_statistics_generator(rand(10,35))];
+  $content=b_stats_faker_statistics_generator(rand(10,35));
+  $content=[
+    'full_data_list'=>prepare_full_data_list($content),
+    'main_data_list'=>prepare_main_data_list($content)
+  ];
+
   return theme_render_template('sites/all/modules/custom/b_stats/theme/main.tpl.php', $content);
+}
+
+function prepare_full_data_list($list){
+  $result_array=[];
+  foreach ($list as $elem){
+      $record_array=[];
+      $record_array['id']=[
+        'col'=> 'ID',
+        'val'=> $elem[0]
+      ];
+
+      $correct_full_name=array_filter([$elem[2],$elem[3],$elem[4]]);
+      $record_array['full_name']=[
+        'col'=> 'ФИО',
+        'val'=> implode(' ',$correct_full_name)
+      ];
+
+      $record_array['inn']=[
+        'col'=> 'ИНН',
+        'val'=> $elem[5]
+      ];
+      
+      $record_array['email']=[
+        'col'=> 'Email',
+        'val'=> $elem[8]
+      ];
+
+      $record_array['number']=[
+        'col'=> 'Номер телефона',
+        'val'=> $elem[9]
+      ];
+
+      if ($elem[6]=='P21001'){
+        $correct_reg_form='ИП';
+      } elseif ($elem[6]=='P11001'){
+        $correct_reg_form='ООО';
+      }
+      $record_array['reg_form']=[
+        'col'=> 'Форма регистрации',
+        'val'=> $correct_reg_form
+      ];
+      
+      $record_array['snils']=[
+        'col'=> 'СНИЛС',
+        'val'=> $elem[7]
+      ];
+
+      $record_array['Bday']=[
+        'col'=> 'Дата рождения',
+        'val'=> $elem[10]
+      ];
+
+      $record_array['sex']=[
+        'col'=> 'Пол',
+        'val'=> $elem[1]
+      ];
+      
+      $record_array['address']=[
+        'col'=> 'Адрес',
+        'val'=> $elem[11]
+      ];
+      
+      $result_array[]=$record_array;
+  }
+  return $result_array;
+}
+
+function prepare_main_data_list($list){
+  $result_array=[];
+  foreach ($list as $elem){
+      $record_array=[];
+      
+      $record_array['id']=[
+        'col'=> 'ID',
+        'val'=> $elem[0]
+      ];
+
+
+      $correct_full_name=array_filter([$elem[2],$elem[3],$elem[4]]);
+      $record_array['full_name']=[
+        'col'=> 'ФИО',
+        'val'=> implode(' ',$correct_full_name)
+      ];
+
+      $record_array['inn']=[
+        'col'=> 'ИНН',
+        'val'=> $elem[5]
+      ];
+      
+      $record_array['email']=[
+        'col'=> 'Email',
+        'val'=> $elem[8]
+      ];
+
+      $record_array['number']=[
+        'col'=> 'Номер телефона',
+        'val'=> $elem[9]
+      ];
+
+      if ($elem[6]=='P21001'){
+        $correct_reg_form='ИП';
+      } elseif ($elem[6]=='P11001'){
+        $correct_reg_form='ООО';
+      }
+      $record_array['reg_form']=[
+        'col'=> 'Форма регистрации',
+        'val'=> $correct_reg_form
+      ];
+
+      $result_array[]=$record_array;
+  }
+  return $result_array;
 }
