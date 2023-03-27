@@ -37,11 +37,6 @@ function b_stats_full_theme_render_callback()
 {
   $content = b_stats_faker_statistics_generator(rand(10, 35));
 
-  echo '<pre>';
-  print_r(prepare_full_data_list($content));
-  echo '</pre>';
-  die();
-
   $content = [
     'full_data_list' => prepare_full_data_list($content)
   ];
