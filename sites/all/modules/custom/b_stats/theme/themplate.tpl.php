@@ -15,10 +15,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
-<div class="container">
+<div class="card-body">
   <div class="row">
     <p class="text-center">
-      <h1>ФИО и ID</h1>
+      <div class="col">
+        <h2>ФИО и ID</h2>
+      </div>
     </p>
   </div>
   <div class="row">
@@ -30,7 +32,9 @@
       <p>текст 3</p>
       <p>текст 4</p>
     </div>
-    <div class="col-md-8 offset-md-2">
+  </div>
+  <div class="row">
+    <div class="text-center">
       <h2>Полная инфа</h2>
     </div>
   </div>
