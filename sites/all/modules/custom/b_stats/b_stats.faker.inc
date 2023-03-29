@@ -73,7 +73,7 @@ define(
 );
 
 //Пол
-define('SEX_ARRAY', array('male', 'female', 'female', 'male', 'female', 'female', 'male', 'male'));
+define('SEX_ARRAY', array('female', 'female', 'female', 'female', 'male', 'male', 'male', 'male'));
 
 //Случайные номера
 define(
@@ -143,7 +143,7 @@ function b_stats_faker_statistics_generator($record_counts)
     $answer_array = [];
     for ($i = 0; $i < $record_counts; $i++) {
 
-        $record_array['ID'] = '00' . ($i+1);
+        $record_array['ID'] = strval($i+1);
         $record_array['First_name'] = FIRST_NAME_ARRAY[$i];
         $record_array['Second_name'] = SECOND_NAME_ARRAY[$i];
         $record_array['Third_name'] = THIRD_NAME_ARRAY[$i];
@@ -156,7 +156,7 @@ function b_stats_faker_statistics_generator($record_counts)
         $record_array['Address'] = ADDRESS_ARRAY[$i];
         $record_array['Reg_form'] = REG_FORM_ARRAY[$i];
 
-        array_push($answer_array, $record_array);
+        $answer_array[]=$record_array;
     }
 
     return $answer_array;
