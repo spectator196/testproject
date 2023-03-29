@@ -162,7 +162,3 @@ function b_stats_faker_statistics_generator($record_counts)
     return $answer_array;
 }
 
-echo '<pre>';
-print_r(b_stats_faker_statistics_generator(8));
-echo '</pre>';
-die();
