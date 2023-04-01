@@ -143,8 +143,8 @@ function b_stats_faker_statistics_generator($record_counts)
     $answer_array = [];
     for ($i = 0; $i < $record_counts; $i++) {
 
-        $record_array=[
-            'ID' => strval($i+1),
+        $record_array = [
+            'ID' => strval($i + 1),
             'First_name' => FIRST_NAME_ARRAY[$i],
             'Second_name' => SECOND_NAME_ARRAY[$i],
             'Third_name' => THIRD_NAME_ARRAY[$i],
@@ -158,9 +158,7 @@ function b_stats_faker_statistics_generator($record_counts)
             'Reg_form' => REG_FORM_ARRAY[$i]
         ];
 
-        $answer_array[]=$record_array;
+        $answer_array[] = $record_array;
     }
-
     return $answer_array;
 }
-
