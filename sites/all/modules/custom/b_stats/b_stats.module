@@ -46,70 +46,89 @@ function b_stats_full_theme_render_callback()
   $content = [
     'full_data_list' => prepare_full_data_list($content)
   ];
-  
-  return theme_render_template('sites/all/modules/custom/b_stats/theme/themplate.tpl.php', $content);
+
+  return theme_render_template('sites/all/modules/custom/b_stats/theme/full.tpl.php', $content);
 }
 
 function prepare_full_data_list($list)
-{ 
-  $result_array=[];
+{
+  $result_array = [];
   foreach ($list as $record) {
-    $main_info_array = [];
-    $extra_info_array=[];
 
-    $main_info_array['Id'] = [
-      'col' => 'ID',
-      'val' => $record['ID']
-    ];
+    if ($record['Sex'] == 'male') {
+      $sex_data = 'Мужской';
+    } elseif ($record['Sex'] == 'female') {
+      $sex_data = 'Женский';
+    } else {
+      $sex_data = '-';
+    }
 
-    $main_info_array['Full_name'] = [
-      'col' => 'ФИО',
-      'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
-    ];
+    $record_array =
+      [
+        'main_info' =>
+        [
+          'title' => 'Основная информация',
+          'value' =>
+          [
+            'Id' => [
+              'col' => 'ID',
+              'val' => $record['ID']
+            ],
 
-    $main_info_array['Inn'] = [
-      'col' => 'ИНН',
-      'val' => $record['Inn']
-    ];
+            'Full_name' => [
+              'col' => 'ФИО',
+              'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
+            ],
 
-    $main_info_array['Email'] = [
-      'col' => 'Email',
-      'val' => $record[8]
-    ];
+            'Inn' => [
+              'col' => 'ИНН',
+              'val' => $record['Inn']
+            ],
 
-    $extra_info_array['Phone_number'] = [
-      'col' => 'Номер телефона',
-      'val' => $record['Phone']
-    ];
+            'Email' => [
+              'col' => 'Email',
+              'val' => $record['Email']
+            ]
+          ]
+        ],
+        'extra_info' =>
+        [
+          'title' => 'Дополнительная информация',
+          'value' =>
+          [
+            'Phone' => [
+              'col' => 'Номер телефона',
+              'val' => $record['Phone']
+            ],
 
-    $extra_info_array['Reg_form'] = [
-      'col' => 'Форма регистрации',
-      'val' => (array_search($record['Reg_form'], REG_DESCRIPTION))
-    ];
+            'Reg_form' => [
+              'col' => 'Форма регистрации',
+              'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
+            ],
 
-    $extra_info_array['Snils'] = [
-      'col' => 'СНИЛС',
-      'val' => $record['Snils']
-    ];
+            'Snils' => [
+              'col' => 'СНИЛС',
+              'val' => $record['Snils']
+            ],
 
-    $extra_info_array['Birthday'] = [
-      'col' => 'Дата рождения',
-      'val' => $record['Bday']
-    ];
+            'Birthday' => [
+              'col' => 'Дата рождения',
+              'val' => $record['Bday']
+            ],
 
-    $extra_info_array['Sex'] = [
-      'col' => 'Пол',
-      'val' => $record['Sex']
-    ];
+            'Sex' => [
+              'col' => 'Пол',
+              'val' => $sex_data
+            ],
 
-    $extra_info_array['Address'] = [
-      'col' => 'Адрес',
-      'val' => $record['Address']
-    ];
-
-    $result_array[$record['ID']]=[
-      'main_info' => ['title' => 'Основная информация','value' => $main_info_array,],
-      'extra_info' => ['title' => 'Дополнительная информация','value' => $extra_info_array]];
+            'Address' => [
+              'col' => 'Адрес',
+              'val' => $record['Address']
+            ]
+          ]
+        ]
+      ];
+    $result_array[$record['ID']] = $record_array;
   }
   return $result_array;
 }
@@ -145,7 +164,7 @@ function convert_array_for_main_data($record)
 
   $converted_record['reg_form'] = [
     'col' => 'Форма регистрации',
-    'val' => (array_search($record['Reg_form'], REG_DESCRIPTION))
+    'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
   ];
 
   return $converted_record;

@@ -1,7 +1,6 @@
 <?php
 /**
  * @var $full_data_list
- * 
  */
 ?>
 
@@ -15,41 +14,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
-<div class="card-body">
-  <div class="row">
-    <p class="text-center">
-      <div class="col">
-        <h2>ФИО и ID</h2>
+<div class="row">
+  <?php foreach ($full_data_list as $record): ?>
+    <div class="card-body">
+      <div class="col-sm-12">
+        <?php foreach ($record as $item): ?>
+          <div>
+          <div><b><?php print ($item['title']) ?>:</b></div>
+            <?php foreach ($item['value'] as $data): ?>
+              <b><?php print ($data['col']) ?>:</b> <?php print ($data['val'])?><br>
+            <?php endforeach; ?>
+          </div>
+        <?php endforeach; ?>
       </div>
-    </p>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      <p>текст 1</p>
-      <p>текст 2</p>
     </div>
-    <div class="col-sm">
-      <p>текст 3</p>
-      <p>текст 4</p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="text-center">
-      <h2>Полная инфа</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm">
-      <p>текст 1</p>
-      <p>текст 2</p>
-      <p>текст 3</p>
-      <p>текст 4</p>
-    </div>
-  <div class="row">
-    <div class="col-sm">
-      <p>текст 1</p>
-      <p>текст 2</p>
-      <p>текст 3</p>
-      <p>текст 4</p>
-    </div>
-</div
+  <?php endforeach; ?>
+</div>

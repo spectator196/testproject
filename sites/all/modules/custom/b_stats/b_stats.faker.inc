@@ -143,18 +143,20 @@ function b_stats_faker_statistics_generator($record_counts)
     $answer_array = [];
     for ($i = 0; $i < $record_counts; $i++) {
 
-        $record_array['ID'] = strval($i+1);
-        $record_array['First_name'] = FIRST_NAME_ARRAY[$i];
-        $record_array['Second_name'] = SECOND_NAME_ARRAY[$i];
-        $record_array['Third_name'] = THIRD_NAME_ARRAY[$i];
-        $record_array['Inn'] = INN_ARRAY[$i];
-        $record_array['Snils'] = SNILS_ARRAY[$i];
-        $record_array['Sex'] = SEX_ARRAY[$i];
-        $record_array['Phone'] = PHONENUMBER_ARRAY[$i];
-        $record_array['Email'] = EMAIL_ARRAY[$i];
-        $record_array['Bday'] = BIRTHDATE_ARRAY[$i];
-        $record_array['Address'] = ADDRESS_ARRAY[$i];
-        $record_array['Reg_form'] = REG_FORM_ARRAY[$i];
+        $record_array=[
+            'ID' => strval($i+1),
+            'First_name' => FIRST_NAME_ARRAY[$i],
+            'Second_name' => SECOND_NAME_ARRAY[$i],
+            'Third_name' => THIRD_NAME_ARRAY[$i],
+            'Inn' => INN_ARRAY[$i],
+            'Snils' => SNILS_ARRAY[$i],
+            'Sex' => SEX_ARRAY[$i],
+            'Phone' => PHONENUMBER_ARRAY[$i],
+            'Email' => EMAIL_ARRAY[$i],
+            'Bday' => BIRTHDATE_ARRAY[$i],
+            'Address' => ADDRESS_ARRAY[$i],
+            'Reg_form' => REG_FORM_ARRAY[$i]
+        ];
 
         $answer_array[]=$record_array;
     }
