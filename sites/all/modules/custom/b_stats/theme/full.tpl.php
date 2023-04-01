@@ -20,9 +20,14 @@
       <div class="col-sm-12">
         <?php foreach ($record as $item): ?>
           <div>
-          <div><b><?php print ($item['title']) ?>:</b></div>
+            <div><b>
+                <?php print($item['title']) ?>:
+              </b></div>
             <?php foreach ($item['value'] as $data): ?>
-              <b><?php print ($data['col']) ?>:</b> <?php print ($data['val'])?><br>
+              <b>
+                <?php print($data['col']) ?>:
+              </b>
+              <?php print($data['val']) ?><br>
             <?php endforeach; ?>
           </div>
         <?php endforeach; ?>
