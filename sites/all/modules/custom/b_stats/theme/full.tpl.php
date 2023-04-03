@@ -21,13 +21,14 @@
         <?php foreach ($record as $item): ?>
           <div>
             <div><b>
-                <?php print($item['title']) ?>:
+                <h5><?php print($item['title']) ?>:</h5>
               </b></div>
             <?php foreach ($item['value'] as $data): ?>
-              <b>
-                <?php print($data['col']) ?>:
-              </b>
-              <?php print($data['val']) ?><br>
+              <div><b>
+                  <?php print($data['col']) ?>:
+                </b>
+                <?php print($data['val']) ?>
+              </div>
             <?php endforeach; ?>
           </div>
         <?php endforeach; ?>

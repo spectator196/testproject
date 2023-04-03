@@ -77,7 +77,7 @@ define('SEX_ARRAY', array('female', 'female', 'female', 'female', 'male', 'male'
 
 //Случайные номера
 define(
-    'PHONENUMBER_ARRAY',
+    'PHONE_NUMBER_ARRAY',
     array(
         '+7 (984) 230-96-84',
         '+7 (917) 141-33-85',
@@ -151,7 +151,7 @@ function b_stats_faker_statistics_generator($record_counts)
             'Inn' => INN_ARRAY[$i],
             'Snils' => SNILS_ARRAY[$i],
             'Sex' => SEX_ARRAY[$i],
-            'Phone' => PHONENUMBER_ARRAY[$i],
+            'Phone' => PHONE_NUMBER_ARRAY[$i],
             'Email' => EMAIL_ARRAY[$i],
             'Bday' => BIRTHDATE_ARRAY[$i],
             'Address' => ADDRESS_ARRAY[$i],

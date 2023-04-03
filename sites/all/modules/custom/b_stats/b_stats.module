@@ -70,22 +70,22 @@ function prepare_full_data_list($list)
           'title' => 'Основная информация',
           'value' =>
           [
-            'Id' => [
+            'id' => [
               'col' => 'ID',
               'val' => $record['ID']
             ],
 
-            'Full_name' => [
+            'full_name' => [
               'col' => 'ФИО',
               'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
             ],
 
-            'Inn' => [
+            'inn' => [
               'col' => 'ИНН',
               'val' => $record['Inn']
             ],
 
-            'Email' => [
+            'email' => [
               'col' => 'Email',
               'val' => $record['Email']
             ]
@@ -96,32 +96,32 @@ function prepare_full_data_list($list)
           'title' => 'Дополнительная информация',
           'value' =>
           [
-            'Phone' => [
+            'phone_number' => [
               'col' => 'Номер телефона',
               'val' => $record['Phone']
             ],
 
-            'Reg_form' => [
+            'reg_form' => [
               'col' => 'Форма регистрации',
               'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
             ],
 
-            'Snils' => [
+            'snils' => [
               'col' => 'СНИЛС',
               'val' => $record['Snils']
             ],
 
-            'Birthday' => [
+            'birthday' => [
               'col' => 'Дата рождения',
               'val' => $record['Bday']
             ],
 
-            'Sex' => [
+            'sex' => [
               'col' => 'Пол',
               'val' => $sex_data
             ],
 
-            'Address' => [
+            'address' => [
               'col' => 'Адрес',
               'val' => $record['Address']
             ]
@@ -133,44 +133,38 @@ function prepare_full_data_list($list)
   return $result_array;
 }
 
-
-function convert_array_for_main_data($record)
-{
-  $converted_record = [];
-  $converted_record['Id'] = [
-    'col' => 'ID',
-    'val' => $record['ID']
-  ];
-
-  $converted_record['full_name'] = [
-    'col' => 'ФИО',
-    'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
-  ];
-
-  $converted_record['inn'] = [
-    'col' => 'ИНН',
-    'val' => $record['Inn']
-  ];
-
-  $converted_record['email'] = [
-    'col' => 'Email',
-    'val' => $record['Email']
-  ];
-
-  $converted_record['Phonenumber'] = [
-    'col' => 'Номер телефона',
-    'val' => $record['Phone']
-  ];
-
-  $converted_record['reg_form'] = [
-    'col' => 'Форма регистрации',
-    'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
-  ];
-
-  return $converted_record;
-}
-
 function prepare_main_data_list($list)
 {
-  return (array_map('convert_array_for_main_data', $list));
+  return (array_map((function ($record) {
+    return [
+      'id' => [
+        'col' => 'ID',
+        'val' => $record['ID']
+      ],
+
+      'full_name' => [
+        'col' => 'ФИО',
+        'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
+      ],
+
+      'inn' => [
+        'col' => 'ИНН',
+        'val' => $record['Inn']
+      ],
+
+      'email' => [
+        'col' => 'Email',
+        'val' => $record['Email']
+      ],
+
+      'phone_number' => [
+        'col' => 'Номер телефона',
+        'val' => $record['Phone']
+      ],
+
+      'reg_form' => [
+        'col' => 'Форма регистрации',
+        'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
+      ]
+    ]; }), $list));
 }
