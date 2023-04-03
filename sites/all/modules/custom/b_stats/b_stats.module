@@ -1,5 +1,12 @@
 <?php
 
+define('REG_DESCRIPTION', [
+  'ИП' => 'P21001',
+  'ООО' => 'P11001',
+  'ИзмИП' => 'P24001',
+  'ИзмООО' => 'P13014'
+]);
+
 module_load_include('inc', 'b_stats', 'b_stats.faker');
 
 function b_stats_menu()
@@ -23,10 +30,9 @@ function b_stats_menu()
 
 function b_stats_theme_render_callback()
 {
-  $content = b_stats_faker_statistics_generator(rand(10, 35));
+  $content = b_stats_faker_statistics_generator(rand(3, 8));
 
   $content = [
-    'full_data_list' => prepare_full_data_list($content),
     'main_data_list' => prepare_main_data_list($content)
   ];
 
@@ -35,145 +41,130 @@ function b_stats_theme_render_callback()
 
 function b_stats_full_theme_render_callback()
 {
-  $content = b_stats_faker_statistics_generator(rand(10, 35));
+  $content = b_stats_faker_statistics_generator(rand(3, 8));
 
   $content = [
     'full_data_list' => prepare_full_data_list($content)
   ];
 
-  return theme_render_template('sites/all/modules/custom/b_stats/theme/themplate.tpl.php', $content);
-}
-
-function filter_array_for_stats($elem)
-{
-  if ($elem == 'P21001') {
-    return 'ИП';
-  } elseif ($elem == 'P11001') {
-    return 'ООО';
-  } else {
-    return $elem;
-  }
+  return theme_render_template('sites/all/modules/custom/b_stats/theme/full.tpl.php', $content);
 }
 
 function prepare_full_data_list($list)
-{ 
-  $converted_array=[];
-  foreach ($list as $record){
-    $converted_array[]=array_map('filter_array_for_stats', $record);
-  }
+{
   $result_array = [];
-  foreach ($converted_array as $elem) {
-    $full_record_array = [];
-    $record_array = [];
+  foreach ($list as $record) {
 
-    $record_array['title'] = 'Главная информация';
+    if ($record['Sex'] == 'male') {
+      $sex_data = 'Мужской';
+    } elseif ($record['Sex'] == 'female') {
+      $sex_data = 'Женский';
+    } else {
+      $sex_data = '-';
+    }
 
-    $record_array['id'] = [
-      'col' => 'ID',
-      'val' => $elem[0]
-    ];
+    $record_array =
+      [
+        'main_info' =>
+        [
+          'title' => 'Основная информация',
+          'value' =>
+          [
+            'id' => [
+              'col' => 'ID',
+              'val' => $record['ID']
+            ],
 
-    $correct_full_name = array_filter([$elem[2], $elem[3], $elem[4]]);
-    $record_array['full_name'] = [
-      'col' => 'ФИО',
-      'val' => implode(' ', $correct_full_name)
-    ];
+            'full_name' => [
+              'col' => 'ФИО',
+              'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
+            ],
 
-    $record_array['inn'] = [
-      'col' => 'ИНН',
-      'val' => $elem[5]
-    ];
+            'inn' => [
+              'col' => 'ИНН',
+              'val' => $record['Inn']
+            ],
 
-    $record_array['email'] = [
-      'col' => 'Email',
-      'val' => $elem[8]
-    ];
+            'email' => [
+              'col' => 'Email',
+              'val' => $record['Email']
+            ]
+          ]
+        ],
+        'extra_info' =>
+        [
+          'title' => 'Дополнительная информация',
+          'value' =>
+          [
+            'phone_number' => [
+              'col' => 'Номер телефона',
+              'val' => $record['Phone']
+            ],
 
-    $full_record_array['main_info'] = $record_array;
-    $record_array = [];
+            'reg_form' => [
+              'col' => 'Форма регистрации',
+              'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
+            ],
 
-    $record_array['title'] = 'Полная информация';
+            'snils' => [
+              'col' => 'СНИЛС',
+              'val' => $record['Snils']
+            ],
 
-    $record_array['number'] = [
-      'col' => 'Номер телефона',
-      'val' => $elem[9]
-    ];
+            'birthday' => [
+              'col' => 'Дата рождения',
+              'val' => $record['Bday']
+            ],
 
-    $record_array['reg_form'] = [
-      'col' => 'Форма регистрации',
-      'val' => $elem[6]
-    ];
+            'sex' => [
+              'col' => 'Пол',
+              'val' => $sex_data
+            ],
 
-    $record_array['snils'] = [
-      'col' => 'СНИЛС',
-      'val' => $elem[7]
-    ];
-
-    $record_array['Bday'] = [
-      'col' => 'Дата рождения',
-      'val' => $elem[10]
-    ];
-
-    $record_array['sex'] = [
-      'col' => 'Пол',
-      'val' => $elem[1]
-    ];
-
-    $record_array['address'] = [
-      'col' => 'Адрес',
-      'val' => $elem[11]
-    ];
-
-    $full_record_array['full_info'] = $record_array;
-
-    $result_array[$elem[0]] = $full_record_array;
+            'address' => [
+              'col' => 'Адрес',
+              'val' => $record['Address']
+            ]
+          ]
+        ]
+      ];
+    $result_array[$record['ID']] = $record_array;
   }
   return $result_array;
 }
 
 function prepare_main_data_list($list)
 {
-  $result_array = [];
-  foreach ($list as $elem) {
-    $record_array = [];
+  return (array_map((function ($record) {
+    return [
+      'id' => [
+        'col' => 'ID',
+        'val' => $record['ID']
+      ],
 
-    $record_array['id'] = [
-      'col' => 'ID',
-      'val' => $elem[0]
-    ];
+      'full_name' => [
+        'col' => 'ФИО',
+        'val' => implode(' ', array_filter([$record['First_name'], $record['Second_name'], $record['Third_name']]))
+      ],
 
-    $correct_full_name = array_filter([$elem[2], $elem[3], $elem[4]]);
-    $record_array['full_name'] = [
-      'col' => 'ФИО',
-      'val' => implode(' ', $correct_full_name)
-    ];
+      'inn' => [
+        'col' => 'ИНН',
+        'val' => $record['Inn']
+      ],
 
-    $record_array['inn'] = [
-      'col' => 'ИНН',
-      'val' => $elem[5]
-    ];
+      'email' => [
+        'col' => 'Email',
+        'val' => $record['Email']
+      ],
 
-    $record_array['email'] = [
-      'col' => 'Email',
-      'val' => $elem[8]
-    ];
+      'phone_number' => [
+        'col' => 'Номер телефона',
+        'val' => $record['Phone']
+      ],
 
-    $record_array['number'] = [
-      'col' => 'Номер телефона',
-      'val' => $elem[9]
-    ];
-
-    if ($elem[6] == 'P21001') {
-      $correct_reg_form = 'ИП';
-    } elseif ($elem[6] == 'P11001') {
-      $correct_reg_form = 'ООО';
-    }
-    $record_array['reg_form'] = [
-      'col' => 'Форма регистрации',
-      'val' => $correct_reg_form
-    ];
-
-    $result_array[] = $record_array;
-  }
-  return $result_array;
+      'reg_form' => [
+        'col' => 'Форма регистрации',
+        'val' => ((array_search($record['Reg_form'], REG_DESCRIPTION)) ?: '-')
+      ]
+    ]; }), $list));
 }
